@@ -1,0 +1,9 @@
+{
+  "short_name": "Контакты",
+  "name": "Контакты",
+  "description": "Контакты для индивидуального пользования",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
