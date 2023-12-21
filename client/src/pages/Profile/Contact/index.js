@@ -23,29 +23,27 @@ const Contact = () => {
     }
   };
 
+  const SaveContact = () => {
+    setEdit(false);
+  };
+
   return (
     <div className={styles["container"]}>
       <div className={styles["container__header"]}>
         <div className={styles["container__header__label"]}>
           <span>Имя контакта</span>
           {!edit ? (
-            <div className={styles["container__btn"]}>
-              <button className={styles["container__header__btn"]}>
-                Импорт
-              </button>
-              <button
-                className={styles["container__header__btn"]}
-                onClick={EditContact}
-              >
-                Редактировать
-              </button>
-
-              <button className={styles["container__header__btn"]}>
-                Удалить
-              </button>
-            </div>
+            <button
+              className={styles["container__header__btn"]}
+              onClick={EditContact}
+            >
+              Редактировать
+            </button>
           ) : (
-            <button className={styles["container__header__btn"]}>
+            <button
+              className={styles["container__header__btn"]}
+              onClick={SaveContact}
+            >
               Сохранить
             </button>
           )}
@@ -58,10 +56,7 @@ const Contact = () => {
         />
         {edit ? (
           <div>
-            <button
-              className={styles["menu"]}
-              onClick={OpenFolder}
-            >
+            <button className={styles["menu"]} onClick={OpenFolder}>
               Добавить
             </button>
             <div className={styles[`${!isOpen ? "active" : "inactive"}`]}>

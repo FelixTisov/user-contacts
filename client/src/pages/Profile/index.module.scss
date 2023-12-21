@@ -1,8 +1,5 @@
 .container {
   display: flex;
-  &__list {
-    height: calc(100vh - 40px);
-    width: 467px;
-    padding: 20px 20px;
-  }
+  justify-content: center;
+  width: 100%;
 }

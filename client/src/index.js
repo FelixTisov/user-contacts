@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client";
 import Login from "./pages/login/login";
 import Home from "./pages/home/home";
 import Plugin from "./pages/plugin/plugin";
+import Profile from "./pages/Profile/profile";
 
 import "./index.scss";
 import Header from "./shared/Layout/Header/header";
@@ -14,8 +15,8 @@ root.render(
     <Header />
     <Routes>
       {/* <Route exact path="/" element={<Login />} /> */}
-      {/* <Route path="/" element={<Home />} /> */}
-      <Route path="/" element={<Profile />} />
+      <Route path="/" element={<Home />} />
+      {/* <Route path="/" element={<Profile />} /> */}
       {/* <Route exact path="/signup" element={<Signup />} /> */}
     </Routes>
   </BrowserRouter>

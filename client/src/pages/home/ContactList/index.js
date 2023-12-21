@@ -6,6 +6,13 @@ import ContactItem from "../ContactItem";
 const ContactList = () => {
   const [list, setList] = useState([3]);
   const [isOpen, setIsOpen] = useState(true);
+  const [value, setValue] = useState("");
+
+  const changeSearch = (e) => {
+    setValue(e.target.value);
+  };
+
+  console.log(value);
 
   const OpenFolder = () => {
     if (!isOpen) {
@@ -30,7 +37,11 @@ const ContactList = () => {
         </div>
       </div>
       <div className={styles["list__search"]}>
-        <InputSearch label={"Поиск"} placeholder={"Поиск"} />
+        <InputSearch
+          label={"Поиск"}
+          placeholder={"Поиск"}
+          onChange={changeSearch}
+        />
       </div>
       <div className={styles["list__contacts"]}>
         {list.map((index) => (
