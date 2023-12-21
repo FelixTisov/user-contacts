@@ -1,12 +1,15 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const webpack = require('webpack')
 
 let mode = "development";
 if (process.env.NODE_ENV === "production") {
   mode = "production";
 }
+
+require('dotenv').config({ path: './.env' })
 
 const config = {
   mode: mode,
@@ -29,6 +32,9 @@ const config = {
       filename: "index.html",
     }),
     new CleanWebpackPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(process.env),
+    }),
   ],
   module: {
     rules: [
