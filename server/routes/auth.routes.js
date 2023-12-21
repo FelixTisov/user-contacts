@@ -21,7 +21,6 @@ router.post('/signup', async (request, response) => {
     let UserID = short.generate()
 
     const executeQuery = new Promise((resolve, reject) => {
-      db.connect()
       db.query(
         "INSERT INTO users (UserID, Email, Password, UserName) VALUES ('" +
           UserID +
@@ -38,7 +37,6 @@ router.post('/signup', async (request, response) => {
           } else resolve(results)
         }
       )
-      db.end()
     })
 
     await executeQuery
@@ -56,7 +54,6 @@ router.post('/login', async (request, response) => {
     let UserID, password
 
     const executeQuery = new Promise((resolve, reject) => {
-      db.connect()
       db.query(
         'SELECT UserID, Password FROM users WHERE Email = ' + '"' + login + '"',
         function (error, results, fields) {
@@ -69,7 +66,6 @@ router.post('/login', async (request, response) => {
           }
         }
       )
-      db.end()
     })
 
     const result = await executeQuery
@@ -87,7 +83,7 @@ router.post('/login', async (request, response) => {
       expiresIn: '1h',
     })
 
-    response.json({ token, UserId: UserID })
+    response.status(303).json({ token, UserId: UserID })
   } catch (error) {
     response.status(500).json({ message: error.message })
   }
