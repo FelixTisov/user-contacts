@@ -1,0 +1,49 @@
+.container {
+  padding: 40px 40px 0;
+  width: 100%;
+  &__header {
+    display: flex;
+    &__label {
+      display: flex;
+      font-size: 24px;
+      font-weight: 600;
+    }
+    &__btn {
+      margin: 0 10px;
+    }
+  }
+  &__body {
+    margin-top: 40px;
+    width: 343px;
+  }
+  &__btn {
+    display: flex;
+  }
+}
+.menu {
+  margin-top: 20px;
+}
+.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: 500ms ease;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 8px;
+  border: #000 solid 2px;
+  padding: 10px;
+  span {
+    cursor: pointer;
+    font-size: 14px;
+    margin: 10px 0;
+  }
+}
+.inactive {
+  opacity: 0;
+  display: none;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: 500ms ease;
+}

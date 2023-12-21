@@ -1,32 +1,32 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-let mode = 'development'
-if (process.env.NODE_ENV === 'production') {
-  mode = 'production'
+let mode = "development";
+if (process.env.NODE_ENV === "production") {
+  mode = "production";
 }
 
 const config = {
   mode: mode,
   entry: {
-    index: path.resolve(__dirname, './src/index.js'),
+    index: path.resolve(__dirname, "./src/index.js"),
   },
   output: {
-    path: path.resolve(__dirname, './dist'),
-    filename: '[name].js',
-    assetModuleFilename: 'icons/[hash][ext][query]',
+    path: path.resolve(__dirname, "./dist"),
+    filename: "[name].js",
+    assetModuleFilename: "icons/[hash][ext][query]",
   },
   resolve: {
-    modules: ['node_modules'],
+    modules: ["node_modules"],
   },
   plugins: [
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
-      title: 'webpack Boilerplate',
-      template: path.resolve(__dirname, './public/index.html'),
-      filename: 'index.html',
+      title: "webpack Boilerplate",
+      template: path.resolve(__dirname, "./public/index.html"),
+      filename: "index.html",
     }),
     new CleanWebpackPlugin(),
   ],
@@ -36,33 +36,47 @@ const config = {
       {
         test: /\.js$/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'],
+            presets: ["@babel/preset-env", "@babel/preset-react"],
           },
         },
       },
       // Styles
       {
         test: /\.(scss|css)$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+      },
+      {
+        test: /\.(c|sa|sc)ss.module$/i,
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          {
+            loader: "css-loader",
+            options: {
+              importLoaders: 1,
+              modules: true,
+            },
+          },
+        ],
       },
       // Images
       {
         test: /\.(svg|png|jpg)$/i,
-        type: 'asset/resource',
+        type: "asset/resource",
       },
       // HTML
       {
         test: /\.html$/,
         use: [
           {
-            loader: 'html-loader',
+            loader: "html-loader",
           },
         ],
       },
     ],
   },
-}
+};
 
-module.exports = config
+module.exports = config;

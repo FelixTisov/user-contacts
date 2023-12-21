@@ -1,0 +1,18 @@
+.input {
+  &__label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  &__input {
+    width: 100%;
+    font-size: 16px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: 2px solid #b3b3b3;
+  }
+  &__input:hover {
+    border-color: #000;
+  }
+}

@@ -1,0 +1,14 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px;
+  height: 40px;
+  box-shadow: 1px 0px 1px 0px #000;
+  background-color: #fff;
+  z-index: 1;
+  &__link {
+    cursor: pointer;
+    margin: 0 10px;
+  }
+}
