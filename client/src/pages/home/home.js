@@ -10,7 +10,7 @@ async function getUserContacts() {
     requestHeaders.set('Content-Type', 'application/json')
     requestHeaders.set('Authorization', token)
 
-    const request = new Request(`${process.env.VUE_APP_API_URL}/contacts`, {
+    const request = new Request(`${process.env.SERVER_API_URL}/contacts`, {
       method: 'POST',
       body: JSON.stringify({ userid: userID }),
       headers: requestHeaders,
@@ -48,3 +48,5 @@ async function getUserContacts() {
 function Home() {
   return <div></div>
 }
+
+export default Home

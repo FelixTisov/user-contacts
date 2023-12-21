@@ -3,8 +3,11 @@ import React from 'react'
 
 // Авторизация пользователя
 async function tryLogin() {
+  console.log('URL: ')
+  console.log(process.env.SERVER_API_URL)
+
   try {
-    const request = new Request(`${process.env.VUE_APP_API_URL}/users/login`, {
+    const request = new Request(`${process.env.SERVER_API_URL}/users/login`, {
       method: 'POST',
       body: JSON.stringify({ ...this.form }),
       headers: { 'content-type': 'application/json' },
@@ -33,6 +36,8 @@ async function tryLogin() {
     console.log(error)
   }
 }
+
+tryLogin()
 
 function Login() {
   return <div>LogIn</div>
