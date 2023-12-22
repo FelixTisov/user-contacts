@@ -35,6 +35,14 @@
       @extend %cont-shared;
       width: 90%;
       height: 100%;
+
+      .current-contact {
+        @extend %cont-shared;
+      }
+
+      .new-contact {
+        @extend %cont-shared;
+      }
     }
   }
 }

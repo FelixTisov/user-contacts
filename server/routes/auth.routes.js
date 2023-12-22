@@ -22,15 +22,8 @@ router.post('/signup', async (request, response) => {
 
     const executeQuery = new Promise((resolve, reject) => {
       db.query(
-        "INSERT INTO users (UserID, Email, Password, UserName) VALUES ('" +
-          UserID +
-          "', '" +
-          login +
-          "', '" +
-          hashedPassword +
-          "', '" +
-          userName +
-          "')",
+        `INSERT INTO users (UserID, Email, Password, UserName) 
+        VALUES ('${UserID}', '${login}', '${hashedPassword}', '${userName}')`,
         function (error, results, fields) {
           if (error) {
             reject(error)
@@ -53,9 +46,12 @@ router.post('/login', async (request, response) => {
     const { login, userPassword } = request.body
     let UserID, password
 
+    if (login === '') throw new Error('Login can not be empty')
+    if (userPassword === '') throw new Error('Passwrod can not be empty')
+
     const executeQuery = new Promise((resolve, reject) => {
       db.query(
-        'SELECT UserID, Password FROM users WHERE Email = ' + '"' + login + '"',
+        `SELECT UserID, Password FROM users WHERE Email = '${login}'`,
         function (error, results, fields) {
           if (error) reject(error)
           else {

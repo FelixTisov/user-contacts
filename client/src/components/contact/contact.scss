@@ -8,6 +8,18 @@
   align-items: flex-start;
   width: 80%;
 
+  input {
+    @extend %primary-font;
+    width: 100%;
+    font-size: 18px;
+    padding: 10px 10px;
+    border-radius: 6px;
+    border: none;
+    &:hover {
+      border-color: #000;
+    }
+  }
+
   .container_header {
     @extend %cont-shared;
     width: 35%;
@@ -45,6 +57,15 @@
     justify-content: flex-start;
     align-items: flex-start;
     width: 343px;
+
+    .input-container_label {
+      @extend %primary-font;
+      font-weight: 400;
+      display: block;
+      font-size: 14px;
+      margin-bottom: 10px;
+      margin-left: 10px;
+    }
   }
 }
 .menu {

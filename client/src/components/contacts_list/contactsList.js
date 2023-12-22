@@ -3,22 +3,25 @@ import SearchInput from '../search_input/searchInput'
 import ContactItem from '../contact_item/contactItem'
 import './contactsList.scss'
 
-const ContactList = ({ contactsList, chooseContact }) => {
-  const [isOpen, setIsOpen] = useState(true)
+const ContactList = ({ contactsList, chooseContact, createNewHandler }) => {
+  // const [isOpen, setIsOpen] = useState(true)
   const [value, setValue] = useState('')
 
+  // Изменить значение поля поиска
   const changeSearch = (e) => {
     setValue(e.target.value)
   }
 
-  const OpenFolder = () => {
-    if (!isOpen) {
-      setIsOpen(true)
-    } else {
-      setIsOpen(false)
-    }
-  }
+  // Открыть выпадающий список сортировки
+  // const OpenFolder = () => {
+  //   if (!isOpen) {
+  //     setIsOpen(true)
+  //   } else {
+  //     setIsOpen(false)
+  //   }
+  // }
 
+  // Открыть контакт
   const chooseThis = (contact) => {
     chooseContact(contact)
   }
@@ -26,7 +29,9 @@ const ContactList = ({ contactsList, chooseContact }) => {
   return (
     <div className="list">
       <div className="list_action">
-        <button className="add-button">Добавить</button>
+        <button className="add-button" onClick={() => createNewHandler()}>
+          Добавить
+        </button>
         {/* <div className="list_action_menu_container">
           <button className="list_action_menu" onClick={OpenFolder}>
             Фильтр
@@ -45,7 +50,7 @@ const ContactList = ({ contactsList, chooseContact }) => {
         />
       </div>
       <div className="list_contacts">
-        {contactsList.map((contact, index) => (
+        {contactsList?.map((contact, index) => (
           <div key={index} onClick={() => chooseThis(contact)}>
             <ContactItem name={contact.ContactName} />
           </div>

@@ -39,10 +39,10 @@ function Login() {
         .then((response) => {
           if (response.status === 303) {
             response.json().then((data) => {
-              const userID = data.UserId
+              const UserID = data.UserId
               const authToken = data.token
 
-              localStorage.setItem('userID', userID)
+              localStorage.setItem('UserID', UserID)
               localStorage.setItem('authToken', authToken)
 
               return navigate('/home')
