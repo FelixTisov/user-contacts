@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './login.scss'
 
 function Login() {
@@ -10,6 +10,13 @@ function Login() {
     login: '',
     userPassword: '',
   })
+
+  useEffect(() => {
+    setForm({
+      login: 'usertwo@gmail.com',
+      userPassword: 'usertwo',
+    })
+  }, [])
 
   // Авторизация пользователя
   async function tryLogin(event) {
@@ -32,7 +39,7 @@ function Login() {
         .then((response) => {
           if (response.status === 303) {
             response.json().then((data) => {
-              const userID = data.userid
+              const userID = data.UserId
               const authToken = data.token
 
               localStorage.setItem('userID', userID)
@@ -71,12 +78,14 @@ function Login() {
 
         <form onSubmit={tryLogin}>
           <input
+            value={form.login}
             type="email"
             name="login"
             placeholder="Почта"
             onChange={inputHandler}
           />
           <input
+            value={form.userPassword}
             type="text"
             name="userPassword"
             placeholder="Пароль"

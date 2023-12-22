@@ -1,0 +1,76 @@
+@import '../../assets/variables.scss';
+
+.container {
+  @extend %cont-shared;
+  height: 500px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 80%;
+
+  .container_header {
+    @extend %cont-shared;
+    width: 35%;
+    height: 50px;
+    justify-content: space-between;
+    font-size: 28px;
+    font-weight: 600;
+
+    .contact-name {
+      @extend %cont-shared;
+      @extend %primary-font;
+      font-weight: 400;
+      justify-content: flex-start;
+      width: 75%;
+      height: 100%;
+    }
+
+    .container_btn {
+      @extend %cont-shared;
+      justify-content: space-between;
+      width: 25%;
+
+      .header-button {
+        height: 22px;
+        width: 22px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .container_body {
+    @extend %cont-shared;
+    padding-top: 30px;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 343px;
+  }
+}
+.menu {
+  margin-top: 20px;
+}
+.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: 500ms ease;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 8px;
+  border: #000 solid 2px;
+  padding: 10px;
+  span {
+    cursor: pointer;
+    font-size: 14px;
+    margin: 10px 0;
+  }
+}
+.inactive {
+  opacity: 0;
+  display: none;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: 500ms ease;
+}

@@ -1,0 +1,40 @@
+@import '../../assets/variables.scss';
+
+.main-container {
+  @extend %cont-shared;
+
+  .main-container_list {
+    @extend %cont-shared;
+    min-width: 380px;
+    width: 25%;
+    padding: 20px 20px;
+  }
+
+  .right-container {
+    @extend %cont-shared;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 99vh;
+    width: 75%;
+
+    .header {
+      @extend %cont-shared;
+      justify-content: flex-end;
+      align-items: flex-end;
+      height: 70px;
+      padding-right: 20px;
+
+      .user-photo {
+        height: 50px;
+        width: 50px;
+        cursor: pointer;
+      }
+    }
+
+    .contact-container {
+      @extend %cont-shared;
+      width: 90%;
+      height: 100%;
+    }
+  }
+}

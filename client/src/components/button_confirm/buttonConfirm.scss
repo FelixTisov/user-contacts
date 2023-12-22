@@ -1,0 +1,33 @@
+.btn_send {
+  cursor: pointer;
+  // text-align: center;
+  font-size: 22px;
+  border: none;
+  border-radius: 6px;
+  background-color: red;
+  padding: 10px 15px;
+  color: #ffffff;
+  appearance: none;
+  width: 100%;
+}
+.btn_send:hover {
+  opacity: 0.8;
+}
+.btn_send:active {
+  opacity: 0.5;
+}
+.btn_send_inactive {
+  cursor: pointer;
+  font-size: 22px;
+  border: none;
+  background-color: #424245;
+  padding: 10px 15px;
+  color: #ffffff;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  height: 100%;
+  width: 120px;
+  appearance: none;
+  margin: 0 15px 10px 15px;
+}
