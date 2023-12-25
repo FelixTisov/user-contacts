@@ -12,11 +12,16 @@ app.use('/contacts', require('./routes/contacts.routes'))
 
 const PORT = process.env.PORT
 
+let server
+
+// Запуск сервера
 async function start() {
   const db = require('./database')
 
   try {
-    app.listen(PORT, () => console.log(`App has been started on port ${PORT}`))
+    server = app.listen(PORT, () =>
+      console.log(`App has been started on port ${PORT}`)
+    )
     db.connect()
   } catch (error) {
     console.error('Server error: ', error.message)
@@ -24,4 +29,10 @@ async function start() {
   }
 }
 
+function stop() {
+  server.close()
+}
+
 start()
+
+module.exports = { app, stop }

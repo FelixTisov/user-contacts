@@ -114,7 +114,8 @@ router.post('/get', async (request, response) => {
   try {
     const { UserID } = request.body
 
-    if (UserID === '') throw new Error('UserID can not be empty')
+    if (UserID === '' || UserID === undefined)
+      throw new Error('UserID can not be empty')
 
     const executeQuery = new Promise((resolve, reject) => {
       db.query(
