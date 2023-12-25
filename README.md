@@ -39,5 +39,4 @@
    DBname= название БД
 3. В директории /user-contacts/client должен быть файл `.env` со следующим содержимым:
    REACT_APP_SERVER_API_URL='http://localhost:5000'
-4. Установите `cross-env` командой `npm install —global cross-env`.
-5. Используйте команду `npm start` в обеих директориях для запуска приложения.
+4. Используйте команду `npm start` в обеих директориях для запуска приложения.
