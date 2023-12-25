@@ -1,5 +1,4 @@
-import { useNavigate } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import ContactList from '../../components/contacts_list/contactsList'
 import Contact from '../../components/contact/contact'
 import './home.scss'
@@ -23,6 +22,7 @@ function Home() {
   const [contactsList, setContactsList] = useState(null)
   const [currentContact, setCurrentContact] = useState(null)
   const [isNew, setIsNew] = useState(false)
+  const fileInput = useRef()
 
   // Загрузить контакты при загрузке страницы
   useEffect(() => {
@@ -55,6 +55,19 @@ function Home() {
             response.json().then((data) => {
               if (data.results != null) {
                 const fetchedContacts = data.results
+
+                // Форматируем строковые значения в массивы, у тех полей, где это необходимо
+                if (fetchedContacts.length > 0)
+                  fetchedContacts.forEach((element) => {
+                    element.ContactPhone =
+                      element.ContactPhone.toString().split(',')
+                    element.ContactEmail =
+                      element.ContactEmail.toString().split(',')
+                    element.ContactAdditionalData = JSON.parse(
+                      JSON.stringify(eval(element.ContactAdditionalData))
+                    )
+                  })
+
                 setContactsList(fetchedContacts)
               }
             })
@@ -110,8 +123,15 @@ function Home() {
 
   // Получить данные формы нового контакта
   const getContactData = (data) => {
-    data.ContactAdditionalData = JSON.stringify(data.ContactAdditionalData)
-    isNew ? saveNewContact(data) : saveEditedContact(data)
+    let dataToSave = { ...data }
+
+    dataToSave.ContactPhone = dataToSave.ContactPhone.toString()
+    dataToSave.ContactEmail = dataToSave.ContactEmail.toString()
+    dataToSave.ContactAdditionalData = JSON.stringify(
+      dataToSave.ContactAdditionalData
+    )
+
+    isNew ? saveNewContact(dataToSave) : saveEditedContact(dataToSave)
   }
 
   // Создать новый контакт
@@ -194,6 +214,114 @@ function Home() {
     setIsNew(true)
   }
 
+  // Обработчик кнопки "Импорт"
+  const fileInputHandler = (e) => {
+    const file = e.target.files[0]
+
+    if (!file) {
+      console.error('File not chosen')
+      return
+    }
+
+    const reader = new FileReader()
+
+    reader.onload = (event) => {
+      const content = event.target.result
+      importNewContacts(content)
+    }
+    reader.onerror = (error) => {
+      console.error('File reading error: ', error)
+    }
+    reader.readAsText(file)
+  }
+
+  // Импортировать контакты из загруженного файла
+  function importNewContacts(data) {
+    try {
+      const token = localStorage.getItem('authToken')
+      const UserID = localStorage.getItem('UserID')
+
+      const requestHeaders = new Headers()
+      requestHeaders.set('Content-Type', 'application/json')
+      requestHeaders.set('Access-Control-Allow-Origin', '*')
+      requestHeaders.set('Authorization', token)
+
+      const request = new Request(
+        `${process.env.REACT_APP_SERVER_API_URL}/contacts/import`,
+        {
+          method: 'POST',
+          body: data,
+          headers: requestHeaders,
+        }
+      )
+
+      fetch(request)
+        .then((response) => {
+          if (response.status === 201) {
+            response.json().then(() => {
+              getUserContacts()
+            })
+          } else {
+            throw new Error('Server error!')
+          }
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  // Обработчик кнопки "Экспорт"
+  const exportHandler = () => {
+    downloadUserContacts()
+  }
+
+  // Скачать контакты пользователя
+  function downloadUserContacts() {
+    try {
+      const token = localStorage.getItem('authToken')
+      const UserID = localStorage.getItem('userID')
+
+      const requestHeaders = new Headers()
+      requestHeaders.set('Content-Type', 'application/json')
+      requestHeaders.set('Access-Control-Allow-Origin', '*')
+      requestHeaders.set('Authorization', token)
+
+      const request = new Request(
+        `${process.env.REACT_APP_SERVER_API_URL}/contacts/get`,
+        {
+          method: 'POST',
+          body: JSON.stringify({ UserID: UserID }),
+          headers: requestHeaders,
+        }
+      )
+
+      fetch(request)
+        .then((response) => {
+          return response.json()
+        })
+        .then((data) => {
+          const jsonData = JSON.stringify(data.results)
+          const blob = new Blob([jsonData], { type: 'application/json' })
+
+          const url = window.URL.createObjectURL(blob)
+          const a = document.createElement('a')
+          a.href = url
+          a.download = 'contacts.json'
+          document.body.appendChild(a)
+          a.click()
+          window.URL.revokeObjectURL(url)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <div className="main-container">
       <div className="main-container_list">
@@ -205,6 +333,18 @@ function Home() {
       </div>
       <div className="right-container">
         <div className="header">
+          <input
+            id="contactsFileInput"
+            type="file"
+            ref={fileInput}
+            onChange={fileInputHandler}
+          />
+          <label for="contactsFileInput" className="import-export-button">
+            Импорт
+          </label>
+          <button onClick={exportHandler} className="import-export-button">
+            Экспорт
+          </button>
           <img
             src={require('../../icons/userpic.svg')}
             alt="User profile photo"

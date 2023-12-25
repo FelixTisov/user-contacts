@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Birthday from '../../plugins/birthday_plugin/birthday'
 import './contact.scss'
 
 function Contact({ contact, getContactData, isNew, deleteHandler }) {
@@ -7,8 +8,8 @@ function Contact({ contact, getContactData, isNew, deleteHandler }) {
   const [form, setForm] = useState({
     UserID: localStorage.getItem('UserID'),
     ContactName: '',
-    ContactPhone: '',
-    ContactEmail: '',
+    ContactPhone: [''],
+    ContactEmail: [''],
     ContactAdditionalData: [],
   })
 
@@ -20,19 +21,13 @@ function Contact({ contact, getContactData, isNew, deleteHandler }) {
         ContactName: contact.ContactName,
         ContactPhone: contact.ContactPhone,
         ContactEmail: contact.ContactEmail,
-        ContactAdditionalData: JSON.parse(
-          JSON.stringify(eval(contact.ContactAdditionalData))
-        ),
+        ContactAdditionalData: contact.ContactAdditionalData,
       })
   }, [contact])
 
   // Выпадающий список выбора нового поля
   const OpenFolder = () => {
-    if (!isOpen) {
-      setIsOpen(true)
-    } else {
-      setIsOpen(false)
-    }
+    setIsOpen((value) => !value)
   }
 
   // Начать редактирование
@@ -40,12 +35,40 @@ function Contact({ contact, getContactData, isNew, deleteHandler }) {
     setEdit(true)
   }
 
-  // Обработчик изменения формы
-  const inputHandler = (event) => {
+  // Обработчик изменения поля имени
+  const inputNameHandler = (event) => {
+    setForm({ ...form, ['ContactName']: event.target.value })
+  }
+
+  // Обработчик изменения полей, содержащих множество значений
+  const inputHandler = (index) => {
+    let editableField = form[event.target.name]
+    editableField[index] = event.target.value
     setForm({
       ...form,
-      [event.target.name]: event.target.value,
+      [event.target.name]: editableField,
     })
+  }
+
+  // Добавление нового поля контакта
+  const addNewFieldHandler = (type) => {
+    switch (type) {
+      case 'phone':
+        contact.ContactPhone.push('')
+        break
+      case 'email':
+        contact.ContactEmail.push('')
+        break
+      case 'birthday':
+        contact.ContactAdditionalData.push({
+          pluginType: 'bd_plugin',
+          content: '',
+        })
+        break
+      default:
+        break
+    }
+    OpenFolder()
   }
 
   // Сохранить контакт
@@ -59,15 +82,27 @@ function Contact({ contact, getContactData, isNew, deleteHandler }) {
     deleteHandler(form.ContactID)
   }
 
+  // Изменение значения поля content плагина
+  const changePluginContent = (newContent, index) => {
+    const newAddData = form.ContactAdditionalData
+    newAddData[index].content = newContent
+
+    setForm({
+      ...form,
+      ['ContactAdditionalData']: newAddData,
+    })
+  }
+
   return (
-    <div className="container">
+    <div className={`container`}>
       <div className="container_header">
         <input
+          disabled={edit || isNew ? false : true}
           type="text"
           placeholder="Имя контакта"
           value={form.ContactName}
           name="ContactName"
-          onChange={inputHandler}
+          onChange={inputNameHandler}
         />
         {!edit && !isNew ? (
           <div className="container_btn">
@@ -92,32 +127,58 @@ function Contact({ contact, getContactData, isNew, deleteHandler }) {
         )}
       </div>
       <div className="container_body">
-        <label className="input-container_label">Номер телефона</label>
-        <input
-          type="text"
-          placeholder="Введите номер телефона"
-          value={form.ContactPhone}
-          name="ContactPhone"
-          onChange={inputHandler}
-        />
-        <label className="input-container_label">Электронная почта</label>
-        <input
-          type="email"
-          placeholder="Введите потчу"
-          value={form.ContactEmail}
-          name="ContactEmail"
-          onChange={inputHandler}
-        />
-        {edit ? (
+        <label className="input-container_label">Номер телефона:</label>
+        {form.ContactPhone.map((item, index) => (
+          <input
+            key={index}
+            disabled={edit || isNew ? false : true}
+            type="text"
+            placeholder="Введите номер телефона"
+            value={item}
+            name="ContactPhone"
+            onChange={() => inputHandler(index)}
+          />
+        ))}
+
+        <label className="input-container_label">Электронная почта:</label>
+        {form.ContactEmail.map((item, index) => (
+          <input
+            key={index}
+            disabled={edit || isNew ? false : true}
+            type="email"
+            placeholder="Введите потчу"
+            value={item}
+            name="ContactEmail"
+            onChange={() => inputHandler(index)}
+          />
+        ))}
+
+        <div className="plugins-container">
+          {form.ContactAdditionalData.map((item, index) => (
+            <div className="plugin" key={index}>
+              {item.pluginType === 'bd_plugin' ? (
+                <Birthday
+                  data={item.content}
+                  index={index}
+                  changePluginContent={changePluginContent}
+                />
+              ) : (
+                <></>
+              )}
+            </div>
+          ))}
+        </div>
+        {edit || isNew ? (
           <div>
             <button className="menu" onClick={OpenFolder}>
               Добавить
             </button>
             <div className={`${!isOpen ? 'active' : 'inactive'}`}>
-              <span>Телефон</span>
-              <span>Почта</span>
-              <span>Дата рождения</span>
-              <span>Адрес</span>
+              <span onClick={() => addNewFieldHandler('phone')}>Телефон</span>
+              <span onClick={() => addNewFieldHandler('email')}>Почта</span>
+              <span onClick={() => addNewFieldHandler('birthday')}>
+                Дата рождения
+              </span>
             </div>
           </div>
         ) : null}

@@ -1,25 +1,14 @@
 import React, { useState } from 'react'
-import SearchInput from '../search_input/searchInput'
 import ContactItem from '../contact_item/contactItem'
 import './contactsList.scss'
 
 const ContactList = ({ contactsList, chooseContact, createNewHandler }) => {
-  // const [isOpen, setIsOpen] = useState(true)
-  const [value, setValue] = useState('')
+  const [searchValue, setSearchValue] = useState('')
 
   // Изменить значение поля поиска
-  const changeSearch = (e) => {
-    setValue(e.target.value)
+  const searchInputHandler = (event) => {
+    setSearchValue(event.target.value)
   }
-
-  // Открыть выпадающий список сортировки
-  // const OpenFolder = () => {
-  //   if (!isOpen) {
-  //     setIsOpen(true)
-  //   } else {
-  //     setIsOpen(false)
-  //   }
-  // }
 
   // Открыть контакт
   const chooseThis = (contact) => {
@@ -32,29 +21,37 @@ const ContactList = ({ contactsList, chooseContact, createNewHandler }) => {
         <button className="add-button" onClick={() => createNewHandler()}>
           Добавить
         </button>
-        {/* <div className="list_action_menu_container">
-          <button className="list_action_menu" onClick={OpenFolder}>
-            Фильтр
-          </button>
-          <div className={`${!isOpen ? 'active' : 'inactive'}`}>
-            <span>По имени</span>
-            <span>По чему</span>
-          </div>
-        </div> */}
       </div>
       <div className="list_search-container">
-        <SearchInput
-          label="Поиск"
+        <input
+          className="search-input"
+          value={searchValue}
+          type="text"
           placeholder="Поиск"
-          onChange={changeSearch}
-        />
+          onChange={searchInputHandler}
+        ></input>
       </div>
       <div className="list_contacts">
-        {contactsList?.map((contact, index) => (
-          <div key={index} onClick={() => chooseThis(contact)}>
-            <ContactItem name={contact.ContactName} />
-          </div>
-        ))}
+        {searchValue.length > 0
+          ? contactsList?.map((contact, index) => {
+              if (
+                contact.ContactName.toLowerCase().indexOf(
+                  searchValue.toLowerCase()
+                ) !== -1
+              ) {
+                return (
+                  <div key={index} onClick={() => chooseThis(contact)}>
+                    <ContactItem name={contact.ContactName} />
+                  </div>
+                )
+              }
+              return null
+            })
+          : contactsList?.map((contact, index) => (
+              <div key={index} onClick={() => chooseThis(contact)}>
+                <ContactItem name={contact.ContactName} />
+              </div>
+            ))}
       </div>
     </div>
   )

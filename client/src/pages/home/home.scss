@@ -24,6 +24,21 @@
       height: 70px;
       padding-right: 20px;
 
+      #contactsFileInput {
+        display: none;
+      }
+
+      .import-export-button {
+        display: block;
+        min-width: 70px;
+        min-width: 70px;
+        max-height: 20px;
+        text-align: center;
+        cursor: pointer;
+        margin-right: 10px;
+        border: 1px solid black;
+      }
+
       .user-photo {
         height: 50px;
         width: 50px;
