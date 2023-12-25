@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "jest",
     "start": "nodemon index.js"
   },
   "author": "Fedor Rumiantsev <theorum@icloud.com>",
